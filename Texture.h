@@ -1,13 +1,13 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <iostream>
 #include <GL/freeglut.h>
+#include <GL/gl.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <iostream>
 
 struct Texture {
-private:
     std::string imagePath;
     float x;
     float y;
@@ -20,6 +20,20 @@ private:
     int imageHeight;
     int bitdepth;
     GLuint texture;
+
+    Texture() {
+        //
+    }
+
+    Texture(std::string imagePath, float x, float y, float w, float h) {
+        this->imagePath = imagePath;
+        this->x = x;
+        this->y = y;
+        this->w = w;
+        this->h = h;
+        selected = false;
+        loadTexture();
+    }
 
     void loadTexture() {
         stbi_set_flip_vertically_on_load(true);
@@ -39,29 +53,6 @@ private:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
     }
 
-public:
-    Texture() {
-        //
-    }
-    
-    Texture(std::string imagePath, float x, float y, float w, float h) {
-        this->imagePath = imagePath;
-        this->x = x;
-        this->y = y;
-        this->w = w;
-        this->h = h;
-        selected = false;
-        loadTexture();
-    }
-
-    void select() {
-        selected = true;
-    }
-
-    void deselect() {
-        selected = false;
-    }
-
     void draw() {
         if (selected) {
             glColor3f(1.0f, 1.0f, 1.0f);
@@ -76,6 +67,7 @@ public:
             glVertex2f(x + w, y - h);
         glEnd();
 
+        glLineWidth(1);
         glColor3f(0.0f, 0.0f, 0.0f);
         glBegin(GL_LINES);
             glVertex2f(x, y - h);
@@ -114,7 +106,6 @@ public:
             glTexCoord2f(1.0f, 0.0f); 
             glVertex2f(x + w, y - h);
         glEnd();
-        
         glDisable(GL_TEXTURE_2D);
     }
 

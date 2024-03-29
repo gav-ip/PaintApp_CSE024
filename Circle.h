@@ -54,6 +54,10 @@ public:
             return false;
         }
     }
+
+    void setX(float x){
+        this->x = x;
+    }
 };
 
 #endif

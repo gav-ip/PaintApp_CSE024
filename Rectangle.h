@@ -3,15 +3,14 @@
 
 #include <GL/freeglut.h>
 #include "Color.h"
+#include "Shape.h"
 
-struct Rectangle {
-private:
-    float x;
-    float y;
+class Rectangle : public Shape{
+
     float w;
     float h;
     Color color;
-    bool selected;
+
 
 public:
     Rectangle() {
@@ -31,21 +30,8 @@ public:
         selected = false;
     }
 
-    void setColor(Color color) {
-        this->color = color;
-    }
-
-    void select() {
-        selected = true;
-    }
-
-    void deselect() {
-        selected = false;
-    }
-
     void draw() {
         glColor3f(color.getR(), color.getG(), color.getB());
-
         glBegin(GL_POLYGON);
             glVertex2f(x, y);
             glVertex2f(x + w, y);
@@ -54,8 +40,8 @@ public:
         glEnd();
 
         if (selected) {
-            Rectangle outer(x + 0.02f, y - 0.02f, w - 0.04f, h - 0.04f, Color(1.0f, 1.0f, 1.0f));
-            Rectangle inner(x + 0.04f, y - 0.04f, w - 0.08f, h - 0.08f, color);
+            Rectangle outer(x + 0.02, y - 0.02, w - 0.04, h - 0.04, Color(1.0f, 1.0f, 1.0f));
+            Rectangle inner(x + 0.04, y - 0.04, w - 0.08, h - 0.08, color);
             outer.draw();
             inner.draw();
         }
@@ -68,6 +54,27 @@ public:
             return false;
         }
     }
+
+    void setColor(Color color){
+        this->color = color;
+    }
+
+    void setW(float w){
+        this->w = w;
+    }
+
+    void setH(float h){
+        this->h = h;
+    }
+
+    float getW(){
+        return w;
+    }
+
+    float getH(){
+        return h;
+    }
+
 };
 
 #endif

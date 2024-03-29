@@ -4,61 +4,78 @@
 #include "Rectangle.h"
 #include "Texture.h"
 
-enum Tool {PENCIL, ERASER};
+enum Tool {PENCIL, ERASER, SQUARE, MOUSE};
 
-struct Toolbar {
-private:
+class Toolbar{
     Rectangle area;
-    Texture pencilButton;
-    Texture eraserButton;
     Tool selectedTool;
 
-    void deselectAll(){
-        pencilButton.deselect();
-        eraserButton.deselect();
+    Texture mouseButton;
+    Texture pencilButton;
+    Texture eraserButton;
+    Texture squareButton;
+
+    void delesectAll(){
+        mouseButton.selected = false;
+        pencilButton.selected = false;
+        eraserButton.selected = false;
+        squareButton.selected = false;
     }
 
 public:
     Toolbar(){
-        area = Rectangle(-1.0f, 1.0f, 0.2f, 2.0f, Color(0.8f, 0.8f, 0.8f));
-        pencilButton = Texture("assets/pencil.png", -1.0f, 1.0f, 0.2f, 0.2f);
-        eraserButton = Texture("assets/eraser.png", -1.0f, 0.8f, 0.2f, 0.2f);
+        area = Rectangle(-1, 1, 0.2, 2, Color(0.8,0.8,0.8));
+        mouseButton = Texture("assets/mouse.png", -1, 1, 0.2, 0.2);
+        pencilButton = Texture("assets/pencil.png", -1, 0.8, 0.2, 0.2);
+        eraserButton = Texture("assets/eraser.png", -1, 0.6, 0.2, 0.2);
+        squareButton = Texture("assets/square.png", -1, 0.4, 0.2, 0.2);
+        selectedTool = PENCIL;
+        pencilButton.selected = true;
+    }
 
-        selectPencil();
+    void draw(){
+        area.draw();
+        mouseButton.draw();
+        pencilButton.draw();
+        eraserButton.draw();
+        squareButton.draw();
+    }
+
+    bool contains(float x, float y){
+        return area.contains(x, y);
+    }
+
+    void handleMouseClick(float x, float y){
+        if (mouseButton.contains(x, y)){
+            delesectAll();
+            mouseButton.selected = true;
+            selectedTool = MOUSE;
+        }
+        else if (pencilButton.contains(x, y)){
+            delesectAll();
+            pencilButton.selected = true;
+            selectedTool = PENCIL;
+        }
+        else if (eraserButton.contains(x, y)){
+            delesectAll();
+            eraserButton.selected = true;
+            selectedTool = ERASER;
+        }
+        else if (squareButton.contains(x, y)){
+            delesectAll();
+            squareButton.selected = true;
+            selectedTool = SQUARE;
+        }
     }
 
     Tool getSelectedTool(){
         return selectedTool;
     }
 
-    void selectPencil() {
-        deselectAll();
-        pencilButton.select();
-        selectedTool = PENCIL;
-    }
-
-    void selectEraser() {
-        deselectAll();
-        eraserButton.select();
+    void selectEraser(){
+        delesectAll();
+        eraserButton.selected = true;
         selectedTool = ERASER;
-    }
-
-    void handleMouseClick(float x, float y){
-        if (pencilButton.contains(x, y)){
-            selectPencil();
-        } else if (eraserButton.contains(x, y)){
-            selectEraser();
-        }
-    }
-
-    void draw(){
-        area.draw();
-        pencilButton.draw();
-        eraserButton.draw();
-    }
-
-    bool contains(float x, float y){
-        return area.contains(x, y);
     }
 };
 
