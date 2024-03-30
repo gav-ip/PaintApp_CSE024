@@ -37,12 +37,6 @@ public:
         blueAxis = Rectangle(-0.75f, -0.94f, 0.5f, 0.03f, Color(0.7f, 0.7f, 0.7f));
     }
 
-    Color getCurrentColor(){
-        return currentColor;
-    }
-    void setCurrentColor(float r, float g, float b){
-        currentColor = Color(r, g, b);
-    }
 
     void handleMouseClick(float x, float y){
         // use the x position to determine an rgb value 0.0 - 1.0
@@ -84,6 +78,13 @@ public:
         }
     }
 
+    Color getCurrentColor(){
+        return currentColor;
+    }
+    void setCurrentColor(float r, float g, float b){
+        currentColor = Color(r, g, b);
+    }
+    
     void draw(){
         area.draw();
         resultColor.draw();

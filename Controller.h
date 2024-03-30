@@ -13,7 +13,7 @@ struct Controller : public AppController {
     Toolbar toolbar;
     Canvas canvas;
     ColorSelector colorSelector;
-
+    
     Controller(){
 
     }
@@ -22,6 +22,7 @@ struct Controller : public AppController {
         if (toolbar.contains(x, y)){
             toolbar.handleMouseClick(x, y);
         }
+
         else if (canvas.contains(x, y)){
             canvas.handleMouseClick(x, y, toolbar.getSelectedTool(), colorSelector.getCurrentColor());
         }

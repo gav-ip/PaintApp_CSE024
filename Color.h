@@ -27,7 +27,12 @@ public:
         this->g = g;
         this->b = b;
     }
-
+    
+    void setWhite(){
+        r = 1.0;
+        g = 1.0;
+        b = 1.0;
+    }
     float getR() {
         return r;
     }

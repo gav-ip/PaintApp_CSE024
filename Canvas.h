@@ -5,6 +5,7 @@
 #include "Toolbar.h"
 #include "Point.h"
 #include "Scribble.h"
+#include "Color.h"
 #include <iostream>
 
 struct Canvas{
@@ -34,10 +35,6 @@ struct Canvas{
     }
 
     void popShape(Shape* arr[], int shapeCounter, int selectedShape){
-        if (selectedShape < 0 || selectedShape >= shapeCounter){
-            std::cout << "Invalid Index" << std::endl;
-            return;
-        }
         
         for (int i = selectedShape; i < shapeCounter - 1; i++){
             arr[i] = arr[i + 1];
@@ -56,7 +53,11 @@ struct Canvas{
             if a shape contains mouse when left clicked remove that shape
             or scribble*/
         else if (selectedTool == ERASER){
-            if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
+
+            if (selectedShape <= 0){std::cout << "Invalid Index, cannot remove first index" << std::endl;}
+            else if (selectedShape >= shapeCounter){std::cout << "Invalid Index, cannot remove last index" << std::endl;}
+
+            else if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
                 popShape(shapes, shapeCounter, selectedShape);
             }
         }
@@ -80,6 +81,9 @@ struct Canvas{
                 }
             }
         }
+        else if (selectedTool == CLEAR){
+            shapeCounter = 0;
+        }
     }
 
     void handleMouseDrag(float x, float y, Tool selectedTool, Color color){
@@ -87,7 +91,7 @@ struct Canvas{
             ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
         }
         else if (selectedTool == ERASER){
-                
+            //((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
         }
         else if (selectedTool == MOUSE){
             if (selectedShape != -1){
