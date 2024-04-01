@@ -46,26 +46,28 @@ struct Canvas{
         shapeCounter--;
     }
 
-    void moveForward(Shape* arr[], int selectedShape){
-        //move shape forward, swap index after the selectedShape index
-        //DOES NOT ACCOUNT FOR EDGE CASE
-        for (int i = selectedShape; i < selectedShape + 1; i++){
-            Shape* temp = arr[i];
-            arr[i] = arr[i+1];
-            arr[i+1] = temp;
+    void moveForward(Shape* arr[], int shapeCounter, int selectedShape){
+        //move shape to the front, swap index after the selectedShape index
+        if (selectedShape < 0 || selectedShape >= shapeCounter) {
+            std::cout << "Index out of range" << std::endl;
+            return;
         }
+
+        Shape* temp = arr[shapeCounter - 1];
+        arr[shapeCounter - 1] = arr[selectedShape];
+        arr[selectedShape] = temp;
     }
     
     void moveBackward(Shape* arr[], int shapeCounter, int selectedShape){
-        // move shape backward, swap index after the selectedShape index 
-        //DOES NOT ACCOUNT FOR EDGE CASE
-        Shape* temp = arr[selectedShape];
-
-        for (int i = selectedShape; i < shapeCounter -1; i++){
-            arr[i] = arr[i+1];
+        // move shape to the back, swap index after the selectedShape index
+        if (selectedShape < 0 || selectedShape >= shapeCounter) {
+            std::cout << "Index out of range" << std::endl;
+            return;
         }
 
-        arr[selectedShape - 1] = temp;
+        Shape* temp = arr[0];
+        arr[0] = arr[selectedShape];
+        arr[selectedShape] = temp;
     }
     void handleMouseClick(float x, float y, Tool selectedTool, Color color){
 
@@ -89,10 +91,10 @@ struct Canvas{
             }
         }
 
-        else if (selectedTool == FORWARD){
-            if (selectedShape != -1){
+         else if (selectedTool == FORWARD){
+            if (selectedShape !=-1){
                 if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
-                    moveForward(shapes, selectedShape);
+                    moveForward(shapes, shapeCounter, selectedShape);
                 }
             }
         }
@@ -100,7 +102,7 @@ struct Canvas{
         else if (selectedTool == BACKWARD){
             if (selectedShape != -1){
                 if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
-                    moveForward(shapes, selectedShape);
+                    moveBackward(shapes, shapeCounter, selectedShape);
                 }
             }
         }
