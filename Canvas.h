@@ -2,6 +2,7 @@
 #define CANVAS_H
 
 #include "Rectangle.h"
+#include "Triangle.h"
 #include "Toolbar.h"
 #include "Point.h"
 #include "Scribble.h"
@@ -35,7 +36,7 @@ struct Canvas{
     }
 
     void popShape(Shape* arr[], int shapeCounter, int selectedShape){
-        
+        //NOTE: unable to remove first or last index because of data leak
         for (int i = selectedShape; i < shapeCounter - 1; i++){
             arr[i] = arr[i + 1];
         }
@@ -54,15 +55,19 @@ struct Canvas{
             or scribble*/
         else if (selectedTool == ERASER){
 
-            if (selectedShape <= 0){std::cout << "Invalid Index, cannot remove first index" << std::endl;}
-            else if (selectedShape >= shapeCounter){std::cout << "Invalid Index, cannot remove last index" << std::endl;}
+            if (selectedShape == 0){std::cout << "Invalid Index, cannot remove first index" << std::endl;}
+            else if (selectedShape == shapeCounter){std::cout << "Invalid Index, cannot remove last index" << std::endl;}
 
-            else if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
+            else if(shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
                 popShape(shapes, shapeCounter, selectedShape);
             }
         }
         else if (selectedTool == SQUARE){
             shapes[shapeCounter] = new Rectangle(x, y, 0.3, 0.3, color);
+            shapeCounter++;
+        }
+        else if (selectedTool == TRIANGLE){
+            shapes[shapeCounter] = new Triangle(x, y, 0.3, 0.3, color);
             shapeCounter++;
         }
         else if (selectedTool == MOUSE){
