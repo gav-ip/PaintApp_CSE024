@@ -4,8 +4,8 @@
 #include "Rectangle.h"
 #include "Texture.h"
 
-enum Tool {MOUSE, PENCIL, ERASER, FORWARD, BACKWARD, SQUARE, TRIANGLE, CLEAR};
-
+enum Tool {MOUSE, PENCIL, ERASER, FORWARD, BACKWARD, SQUARE, TRIANGLE, CIRCLE, HEXAGON, CLEAR};
+    
 class Toolbar{
     Rectangle area;
     Tool selectedTool;
@@ -17,6 +17,8 @@ class Toolbar{
     Texture backwardButton;
     Texture squareButton;
     Texture triangleButton;
+    Texture circleButton;
+    Texture hexagonButton;
     Texture clearButton;
 
     void delesectAll(){
@@ -27,6 +29,8 @@ class Toolbar{
         backwardButton.selected = false;
         squareButton.selected = false;
         triangleButton.selected = false;
+        circleButton.selected = false;
+        hexagonButton.selected = false;
         clearButton.selected = false;
     }
 
@@ -40,7 +44,9 @@ public:
         backwardButton = Texture("assets/backarrow.png", -1, 0.2, 0.2, 0.2);
         squareButton = Texture("assets/square.png", -1, 0.0, 0.2, 0.2);
         triangleButton = Texture("assets/triangle.png", -1, -0.2, 0.2, 0.2);
-        clearButton = Texture("assets/trash.png", -1, -0.4, 0.2, 0.2);
+        circleButton = Texture("assets/circle.png", -1, -0.4, 0.2, 0.2);
+        hexagonButton = Texture("assets/hexagon.png", -1, -0.6, 0.2, 0.2);
+        clearButton = Texture("assets/trash.png", -1, -0.8, 0.2, 0.2);
         selectedTool = PENCIL;
         pencilButton.selected = true;
     }
@@ -54,6 +60,8 @@ public:
         backwardButton.draw();
         squareButton.draw();
         triangleButton.draw();
+        circleButton.draw();
+        hexagonButton.draw();
         clearButton.draw();
     }
 
@@ -97,13 +105,21 @@ public:
             triangleButton.selected = true;
             selectedTool = TRIANGLE;
         }
+        else if (circleButton.contains(x, y)){
+            delesectAll();
+            circleButton.selected = true;
+            selectedTool = CIRCLE;
+        }
+        else if (hexagonButton.contains(x, y)){
+            delesectAll();
+            hexagonButton.selected = true;
+            selectedTool = HEXAGON;
+        }
         else if (clearButton.contains(x, y)){
             delesectAll();
             clearButton.selected = true;
             selectedTool = CLEAR;
         }
-    }
-    void handleClear(float x, float y){
     }
 
     Tool getSelectedTool(){

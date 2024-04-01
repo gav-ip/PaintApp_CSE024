@@ -3,6 +3,8 @@
 
 #include "Rectangle.h"
 #include "Triangle.h"
+#include "Circle.h"
+#include "Hexagon.h"
 #include "Toolbar.h"
 #include "Point.h"
 #include "Scribble.h"
@@ -42,34 +44,85 @@ struct Canvas{
         }
 
         shapeCounter--;
+    }
 
+    void moveForward(Shape* arr[], int selectedShape){
+        //move shape forward, swap index after the selectedShape index
+        //DOES NOT ACCOUNT FOR EDGE CASE
+        for (int i = selectedShape; i < selectedShape + 1; i++){
+            Shape* temp = arr[i];
+            arr[i] = arr[i+1];
+            arr[i+1] = temp;
+        }
+    }
+    
+    void moveBackward(Shape* arr[], int shapeCounter, int selectedShape){
+        // move shape backward, swap index after the selectedShape index 
+        //DOES NOT ACCOUNT FOR EDGE CASE
+        Shape* temp = arr[selectedShape];
+
+        for (int i = selectedShape; i < shapeCounter -1; i++){
+            arr[i] = arr[i+1];
+        }
+
+        arr[selectedShape - 1] = temp;
     }
     void handleMouseClick(float x, float y, Tool selectedTool, Color color){
+
+        //NOTE: Must click on canvas to initiate each tool
         if (selectedTool == PENCIL){
             shapes[shapeCounter] = new Scribble();
             shapeCounter++;
             ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
         }
-        /*ERASER TOOL:
+
+        else if (selectedTool == ERASER){
+            /*ERASER TOOL:
             if a shape contains mouse when left clicked remove that shape
             or scribble*/
-        else if (selectedTool == ERASER){
-
-            if (selectedShape == 0){std::cout << "Invalid Index, cannot remove first index" << std::endl;}
-            else if (selectedShape == shapeCounter){std::cout << "Invalid Index, cannot remove last index" << std::endl;}
-
-            else if(shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
-                popShape(shapes, shapeCounter, selectedShape);
+            if (selectedShape != -1){
+                if (selectedShape == 0){std::cout << "Invalid Index, cannot remove first index" << std::endl;}
+                else if (selectedShape == shapeCounter){std::cout << "Invalid Index, cannot remove last index" << std::endl;}
+                else if(shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
+                    popShape(shapes, shapeCounter, selectedShape);
+                }
             }
         }
+
+        else if (selectedTool == FORWARD){
+            if (selectedShape != -1){
+                if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
+                    moveForward(shapes, selectedShape);
+                }
+            }
+        }
+
+        else if (selectedTool == BACKWARD){
+            if (selectedShape != -1){
+                if (shapes[selectedShape]->isSelected() && shapes[selectedShape]->contains(x,y)){
+                    moveForward(shapes, selectedShape);
+                }
+            }
+        }
+
         else if (selectedTool == SQUARE){
             shapes[shapeCounter] = new Rectangle(x, y, 0.3, 0.3, color);
             shapeCounter++;
         }
+
         else if (selectedTool == TRIANGLE){
             shapes[shapeCounter] = new Triangle(x, y, 0.3, 0.3, color);
             shapeCounter++;
         }
+        else if (selectedTool == CIRCLE){
+            shapes[shapeCounter] = new Circle(x, y, 0.3, color);
+            shapeCounter++;
+        }
+        else if (selectedTool == HEXAGON){
+            shapes[shapeCounter] = new Hexagon(x, y, 0.3, color);
+            shapeCounter++;
+        }
+
         else if (selectedTool == MOUSE){
             for (int i = 0; i < shapeCounter; i++){
                 shapes[i]->deselect();
@@ -77,6 +130,7 @@ struct Canvas{
             selectedShape = -1;
 
             for (int i = shapeCounter - 1; i >= 0; i--){
+    
                 if (shapes[i]->contains(x,y)){
                     shapes[i]->select();
                     selectedShape = i;
@@ -86,9 +140,11 @@ struct Canvas{
                 }
             }
         }
+
         else if (selectedTool == CLEAR){
             shapeCounter = 0;
         }
+        
     }
 
     void handleMouseDrag(float x, float y, Tool selectedTool, Color color){
