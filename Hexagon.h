@@ -3,12 +3,9 @@
 
 #include <GL/freeglut.h>
 #include <cmath>
-#include "Shape.h"
-#include "Color.h"
 
 class Hexagon : public Shape {
     float size;
-    Color color;
 
 public:
     Hexagon() {

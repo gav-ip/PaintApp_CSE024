@@ -2,15 +2,12 @@
 #define RECTANGLE_H
 
 #include <GL/freeglut.h>
-#include "Color.h"
 #include "Shape.h"
 
 class Rectangle : public Shape{
 
     float w;
     float h;
-    Color color;
-
 
 public:
     Rectangle() {

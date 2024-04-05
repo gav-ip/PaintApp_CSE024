@@ -1,7 +1,6 @@
 #ifndef SCRIBBLE_H
 #define SCRIBBLE_H
 
-#include "Color.h"
 #include "Point.h"
 #include <GL/gl.h>
 #include "Shape.h"
@@ -84,7 +83,7 @@ public:
         for (int i = 0; i < pCounter; i++){
             float currX = x + points[i].getX();
             float currY = y + points[i].getY();
-            Color currColor = points[i].getColor();
+            Color currColor = color;
             Point temp(currX, currY, currColor);
             temp.draw();
         }

@@ -3,14 +3,12 @@
 
 #include <cmath>
 #include <GL/freeglut.h>
-#include "Color.h"
 #include "Shape.h"
 
 class Circle : public Shape{
     float x;
     float y;
     float radius;
-    Color color;
     bool selected;
 
 public:

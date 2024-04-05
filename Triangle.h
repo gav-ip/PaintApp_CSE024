@@ -2,7 +2,6 @@
 #define TRIANGLE_H
 
 #include <GL/freeglut.h>
-#include "Color.h"
 #include "Shape.h"
 
 
@@ -10,7 +9,6 @@ class Triangle : public Shape{
 
     float w;
     float h;
-    Color color;
 
 public:
     Triangle() {
