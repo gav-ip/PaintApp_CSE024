@@ -1,6 +1,7 @@
 #ifndef CANVAS_H
 #define CANVAS_H
 
+#include "Shape.h"
 #include "Rectangle.h"
 #include "Triangle.h"
 #include "Circle.h"
@@ -9,6 +10,7 @@
 #include "Point.h"
 #include "Scribble.h"
 #include "Color.h"
+#include "ColorSelector.h"
 #include <iostream>
 
 struct Canvas{
@@ -76,6 +78,7 @@ struct Canvas{
             shapes[shapeCounter] = new Scribble();
             shapeCounter++;
             ((Scribble*)shapes[shapeCounter-1])->addPoint(x, y, color);
+            ((Scribble*)shapes[shapeCounter-1])->setCurrentColor(color);
         }
 
         else if (selectedTool == ERASER){
@@ -115,7 +118,7 @@ struct Canvas{
             shapeCounter++;
         }
         else if (selectedTool == CIRCLE){
-            shapes[shapeCounter] = new Circle(x, y, 0.3, color);
+            shapes[shapeCounter] = new Circle(x, y, 0.2, color);
             shapeCounter++;
         }
         else if (selectedTool == HEXAGON){

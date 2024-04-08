@@ -3,6 +3,7 @@
 
 #include <GL/freeglut.h>
 #include <cmath>
+#include "Shape.h"
 
 class Hexagon : public Shape {
     float size;
