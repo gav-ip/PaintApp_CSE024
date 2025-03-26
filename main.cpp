@@ -1,6 +1,6 @@
 #include <GL/freeglut.h>
-#include "GlutApp.h"
-#include "Controller.h"
+#include "/src/GlutApp.h"
+#include "/src/Controller.h"
 
 using namespace std;
 
